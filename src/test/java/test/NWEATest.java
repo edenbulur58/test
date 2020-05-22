@@ -1,27 +1,21 @@
 package test;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.NweaPages;
+import utilities.ConfigReader;
+import utilities.Driver;
 
 public class NWEATest {
 
+    NweaPages nweaPages=new NweaPages();
+
     @Test
-    public  void loginMethod(){
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://sso.mapnwea.org/auth/login?dest=https%3A%2F%2Fteach.mapnwea.org%2Fadmin%2F");
+    public  void loginMethod() throws InterruptedException {
+        Driver.getDriver().get(ConfigReader.getProperty("url_nwea"));
+        nweaPages.logIn("fakeusername","fakepass");
+        Thread.sleep(3000);
+        Assert.assertTrue(nweaPages.errorMessage.getText().equals("Username and Password do not match"));
+    }
 
-        WebElement username=driver.findElement(By.id("username"));
-        WebElement password=driver.findElement(By.id("password"));
-
-        username.sendKeys("username");
-        password.sendKeys("password");
-
-
-
-}
 }
